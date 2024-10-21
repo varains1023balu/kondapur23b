@@ -1,0 +1,142 @@
+FIND COMMANDS 
+=============
+
+1-display current location files and directory
+===============================================
+#find .
+#find . -print
+#find . -empty
+#find / -print
+#find / -empty
+
+2-searching with file /directory name
+======================================
+#find / -name vara*
+#find / -iname vara* -------------> upper case
+#find / -name '*.gz'
+
+3-searching with type of conditions.
+====================================
+#find / -type f -name vara*
+#find / -typd d -name vara-dir*
+
+4-searching with permissions.
+=============================
+#find / -perm 755
+#find / -perm /g+s (or) /o=t /u=s /g=s
+#find / -perm /o=t -print
+#find / -perm /g=s -print
+#find / -perm /u=s -print
+#find / -type f -perm 0755 -print
+
+5-searching and action.
+=======================
+#find / -type f -perm 0755 -exec mv {} /tmp/ \;
+#find . -type f -size 0 -exec mv {} /tmp/ \;
+#find /tmp/backup -type f -name aa -size 0 -exec mv {} /tmp/ \;
+#find / -type f 
+#find / -type d
+#find / -type l
+#find / -type b
+#find / -type c
+
+hard link find
+==============
+#find / -inum <inode no>
+
+owner/user
+==========
+#find / -user vara
+
+group 
+=====
+#find / -group dev
+
+sized 
+=====
+#find / -size +199M
+#find / -size -100M
+#find / -size 100M
+
+time stamp
+==========
+#find / -atime
+#find / -mtime
+#find / -ctime
+
+name
+====
+#find / -name
+#find / -iname
+
+
+SEARCHING AND ACTIONS
+=====================
+#find /tmp -empty -exec mv {} /var/tmp \;
+#find /tmp -empty -exec ls -l {} /tmp/bkp \;
+#find /tmp -empty -exec rm -rf {} /tmp/bkp \;
+#find /tmp/bkp -empty -exec cp {} /var/tmp \;
+
+CHANGE PERMISSION
+=================
+#find /tmp/bkp -empty -exec chmod 777 {} \;
+#find /tmp/bkp -empty -exec chown vara:vara {} \;
+
+#find /tmp/ -! -perm777
+
+
+6-syntax multiple ways
+======================
+type -1
+=======
+#touch file {1..100}
+#find /tmp -iname '*' -exec ls {} \;
+#mkdir /tmp/bkp
+#find /tmp -type f -size0 -exec mv {} /tmp/bkp \;
+#rm -rf /tmp/*
+
+type-2
+======
+#touch file {1..100}
+#find /tmp -iname '*' -exec ls {} +
+#find /tmp -type f -size0 -exec rm {} +
+
+type-3 - ok
+===========
+#touch aa bb cc dd ee ff 
+#mkdir /tmp/bkp
+#find /tmp -type f -size0 -ok mv {} /tmp/bkp \;
+
+
+Interactive 
+===========
+#find /tmp/bkp -type f -size0 -exec rm -i {} \;
+
+
+type-4
+======
+#touch aa bb cc dd ee ff
+#find /tmp -type f -print0|xargs -o chmod 755
+#find /tmp -type f -print0|xargs -o rm -rf \;
+
+#find / -type f -name ".*"
+#find /var/log -type f -name *.log -exec truncate -0 {} +
+#find /tmp -type f -name '*.log' -exec mv {}_New_Name_20102024 \;
+
+
+SIZE
+====
+#find . -type f -size 1M --------------> showing exact size.
+#find. -type f -size -5M --------------> Below size.
+#find. -type f -size +5M --------------> More than size.
+#find. -type f -size +5M -size -10M ---> More than 5Mb and below 10Mb.
+
+ATIME        MTIME       CTIME
+===============================
+#find /home -atime 10 ----------> files accessed exactly 10 days ago.
+#find /home -atime +10 ---------> Eclude last 10 days, show remina days.
+#find /home -atime -10 ---------> Accssed --> with the last 10 days.
+
+#find /home -amin 10 -----------> files accessed exactly10 min ago.
+#find /home -amin +10 ----------> Exclude last 10 mins, show remain mins.
+#find /home -amin -10 ----------> Accssed with in the last 10 mins.
